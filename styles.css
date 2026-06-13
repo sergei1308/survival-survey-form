@@ -1,0 +1,85 @@
+:root {
+  color-scheme: light;
+  font-family: Arial, sans-serif;
+  color: #17233c;
+  background: #f2f5fa;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; padding: 35px 16px; }
+.survey-card {
+  max-width: 680px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 18px 55px rgba(41, 62, 92, .13);
+}
+.survey-header {
+  padding: 28px 34px;
+  color: #fff;
+  background: linear-gradient(135deg, #113c45, #146c5c);
+}
+.survey-header h1 { margin: 0 0 8px; font-size: 30px; }
+.survey-header p { margin: 0; opacity: .88; }
+.survey-body { padding: 30px 34px 36px; }
+label, legend { display: block; margin-bottom: 8px; font-weight: 700; }
+fieldset { padding: 0; margin: 0 0 22px; border: 0; }
+fieldset label { display: inline-block; margin-right: 22px; font-weight: 400; }
+input[type="number"], select {
+  width: 100%;
+  min-height: 42px;
+  margin-bottom: 22px;
+  padding: 8px 10px;
+  border: 1px solid #aab5c5;
+  border-radius: 6px;
+  font-size: 16px;
+}
+.probability-row {
+  display: grid;
+  grid-template-columns: 1fr 90px 20px;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.probability-row input { margin: 0; }
+button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 13px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  background: #146c5c;
+  border: 1px solid #146c5c;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button:disabled { opacity: .65; cursor: wait; }
+.error-box {
+  margin-top: 18px;
+  padding: 12px 14px;
+  color: #a72d3b;
+  background: #fff0f1;
+  border: 1px solid #f1c6cb;
+  border-radius: 8px;
+}
+.success-box { padding: 35px 10px; text-align: center; }
+.success-mark {
+  width: 62px;
+  height: 62px;
+  margin: 0 auto 18px;
+  padding-top: 12px;
+  color: #fff;
+  font-size: 28px;
+  background: #146c5c;
+  border-radius: 50%;
+}
+code { overflow-wrap: anywhere; }
+
+@media (max-width: 700px) {
+  body { padding: 0; }
+  .survey-card { min-height: 100vh; border-radius: 0; }
+  .survey-header, .survey-body { padding-left: 22px; padding-right: 22px; }
+  .probability-row { grid-template-columns: 1fr 75px 18px; }
+}
