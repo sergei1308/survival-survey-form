@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Survival Probability Survey</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="survey-card">
+    <header class="survey-header">
+      <h1>Survival Probability Estimate</h1>
+      <p>Conference survey. Required fields are marked with an asterisk.</p>
+    </header>
+
+    <section class="survey-body">
+      <form id="survey-form" novalidate>
+        <fieldset>
+          <legend>Gender *</legend>
+          <label><input type="radio" name="gender" value="female"> Female</label>
+          <label><input type="radio" name="gender" value="male"> Male</label>
+        </fieldset>
+
+        <label for="age">Age in completed years *</label>
+        <input id="age" name="age" type="number" min="18" max="120" step="1" required>
+
+        <label for="education">Highest education completed *</label>
+        <select id="education" name="education" required>
+          <option value="">Select one</option>
+          <option value="primary">Primary</option>
+          <option value="secondary">Secondary</option>
+          <option value="tertiary">Tertiary</option>
+          <option value="phd">PhD</option>
+        </select>
+
+        <label id="probability-label" for="probability">
+          Probability of surviving to the assigned target age *
+        </label>
+        <div class="probability-row">
+          <input id="probability-slider" type="range" min="0" max="100" step="1" value="50">
+          <input id="probability" name="probability" type="number" min="0" max="100" step="1" value="50" required>
+          <span>%</span>
+        </div>
+
+        <div id="turnstile-widget"></div>
+        <div id="error-box" class="error-box" role="alert" hidden></div>
+        <button id="submit-button" type="submit">OK - Submit response</button>
+      </form>
+
+      <section id="success-box" class="success-box" hidden>
+        <div class="success-mark">&#10003;</div>
+        <h2>Thank you</h2>
+        <p>Your anonymous response has been recorded successfully.</p>
+        <p><strong>Response ID:</strong> <code id="saved-response-id"></code></p>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
