@@ -11,10 +11,9 @@ const educationInput = document.getElementById("education");
 const probabilityInput = document.getElementById("probability");
 const probabilitySlider = document.getElementById("probability-slider");
 const probabilityLabel = document.getElementById("probability-label");
-let turnstileWidgetId = null;
 
 function targetAgeFor(age) {
-  if (!Number.isInteger(age) || age < 18 || age > 120) return null;
+  if (!Number.isInteger(age) || age < 25 || age > 95) return null;
   if (age < 60) return 70;
   return Math.floor(age / 10 + 2) * 10;
 }
@@ -53,8 +52,8 @@ function buildPayload() {
   if (!["female", "male"].includes(gender)) {
     throw new Error("Please select gender.");
   }
-  if (!validInteger(age, 18, 120)) {
-    throw new Error("Please enter a whole-number age from 18 to 120.");
+  if (!validInteger(age, 25, 95)) {
+    throw new Error("Please enter a whole-number age from 25 to 95.");
   }
   if (!["primary", "secondary", "tertiary", "phd"].includes(education)) {
     throw new Error("Please select the highest education completed.");
@@ -80,19 +79,13 @@ async function submitWithRetry(payload) {
   if (!config.submitUrl) {
     throw new Error("The survey submission service is not configured.");
   }
-  const token = window.turnstile && turnstileWidgetId !== null
-    ? window.turnstile.getResponse(turnstileWidgetId)
-    : "";
-  if (!token) {
-    throw new Error("Please complete the human verification.");
-  }
   let lastError = null;
   for (let attempt = 0; attempt < 5; attempt += 1) {
     try {
       const response = await fetch(config.submitUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, turnstile_token: token })
+        body: JSON.stringify(payload)
       });
       const result = await response.json().catch(() => ({}));
       if (response.ok && result.saved === true) return result;
@@ -109,9 +102,6 @@ async function submitWithRetry(payload) {
     if (attempt < 4) {
       await sleep(1000 * (2 ** attempt) + Math.random() * 500);
     }
-  }
-  if (window.turnstile && turnstileWidgetId !== null) {
-    window.turnstile.reset(turnstileWidgetId);
   }
   throw lastError || new Error("The response could not be saved.");
 }
@@ -164,16 +154,8 @@ probabilityInput.addEventListener("input", () => {
 
 window.addEventListener("load", () => {
   updateTargetQuestion();
-  if (window.turnstile && config.turnstileSiteKey) {
-    turnstileWidgetId = window.turnstile.render("#turnstile-widget", {
-      sitekey: config.turnstileSiteKey,
-      theme: "light"
-    });
-  } else {
-    showError("The survey verification service is not configured.");
-  }
   const pending = localStorage.getItem(pendingKey);
   if (pending) {
-    showError("A previous response is waiting to be saved. Complete verification and press Submit to retry.");
+    showError("A previous response is waiting to be saved. Press Submit to retry.");
   }
 });
